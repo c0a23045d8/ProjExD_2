@@ -11,6 +11,21 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 DELTA = {pg.K_UP: (0, -5), pg.K_DOWN: (0, 5), 
          pg.K_RIGHT: (5, 0), pg.K_LEFT: (-5, 0)}
 
+def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
+    """
+    引数で与えられたRectが画面の中か外かを判定する
+    引数：こうかとんRect or 爆弾Rect
+    戻り値：タプル（横方向判定結果、縦方向判定結果））
+    画面内ならTrue, 画面外ならFalse
+    """
+    yoko, tate = True, True
+    if rct.left < 0 or WIDTH < rct.right:
+        yoko = False
+    if rct.top < 0 or HEIGHT < rct.bottom:
+        tate = False
+
+    return yoko, tate
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -24,7 +39,7 @@ def main():
     bb_rct = bb_img.get_rect() # 爆弾Rectの抽出
     bb_rct.centerx = random.randint(0, WIDTH) 
     bb_rct.centery = random.randint(0, HEIGHT)
-    vx, vy = +5, -5
+    vx, vy = +5, -5 # 爆弾ベクトル
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -40,8 +55,16 @@ def main():
                 sum_mv[0] += tpl[0]
                 sum_mv[1] += tpl[1]
         kk_rct.move_ip(sum_mv)
+        # 効果トンが画面外なら、元の場所に戻す
+        if check_bound(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img, kk_rct)
-        bb_rct.move_ip(vx, vy)
+        bb_rct.move_ip(vx, vy) # 爆弾動く
+        yoko, tate = check_bound(bb_rct)
+        if not yoko: # 横にはみ出てる
+            vx *= -1
+        if not tate: # 盾にはみ出てる
+            vy *= -1
         screen.blit(bb_img, bb_rct)
         pg.display.update()
         tmr += 1
