@@ -75,21 +75,21 @@ def get_kk_img(sum_mv: tuple[int, int]) -> pg.Surface:
     if sum_mv == (0, 0):
         return kk_img
     if sum_mv == (0, -5):
-        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)
+        return pg.transform.rotozoom(kk_img, 0, 0.9)
     if sum_mv == (0, 5):
-        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 180, 0.9)
+        return pg.transform.rotozoom(kk_img, 180, 0.9)
     if sum_mv == (-5, 0):
-        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 90, 0.9)
+        return pg.transform.rotozoom(kk_img, 90, 0.9)
     if sum_mv == (5, 0):
-        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 270, 0.9)
+        return pg.transform.rotozoom(kk_img, 270, 0.9)
     if sum_mv == (-5, -5):
-        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 45, 0.9)
+        return pg.transform.rotozoom(kk_img, 45, 0.9)
     if sum_mv == (5, -5):
-        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 315, 0.9)
+        return pg.transform.rotozoom(kk_img, 315, 0.9)
     if sum_mv == (-5, 5):
-        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 135, 0.9)
+        return pg.transform.rotozoom(kk_img, 135, 0.9)
     if sum_mv == (5, 5):
-        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 225, 0.9)
+        return pg.transform.rotozoom(kk_img, 225, 0.9)
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
