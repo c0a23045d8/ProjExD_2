@@ -71,6 +71,7 @@ def get_kk_img(sum_mv: tuple[int, int]) -> pg.Surface:
     引数:押下キーに対する移動量の合計値タプル
     戻り値:rotozoomしたSurface
     """
+    # こうかとんの画像をロード
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)
     if sum_mv == (0, 0):
         return kk_img
