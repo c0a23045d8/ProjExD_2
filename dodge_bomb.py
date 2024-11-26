@@ -12,6 +12,8 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 DELTA = {pg.K_UP: (0, -5), pg.K_DOWN: (0, 5), 
          pg.K_RIGHT: (5, 0), pg.K_LEFT: (-5, 0)}
 
+
+
 def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     """
     引数で与えられたRectが画面の中か外かを判定する
@@ -64,6 +66,30 @@ def init_bb_imags() -> tuple[list[pg.Surface], list[int]]:
 
     return bb_imgs, accs
 
+def get_kk_img(sum_mv: tuple[int, int]) -> pg.Surface:
+    """
+    引数:押下キーに対する移動量の合計値タプル
+    戻り値:rotozoomしたSurface
+    """
+    kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)
+    if sum_mv == (0, 0):
+        return kk_img
+    if sum_mv == (0, -5):
+        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)
+    if sum_mv == (0, 5):
+        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 180, 0.9)
+    if sum_mv == (-5, 0):
+        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 90, 0.9)
+    if sum_mv == (5, 0):
+        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 270, 0.9)
+    if sum_mv == (-5, -5):
+        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 45, 0.9)
+    if sum_mv == (5, -5):
+        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 315, 0.9)
+    if sum_mv == (-5, 5):
+        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 135, 0.9)
+    if sum_mv == (5, 5):
+        return pg.transform.rotozoom(pg.image.load("fig/3.png"), 225, 0.9)
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -113,6 +139,8 @@ def main():
         bb_rct.width, bb_rct.height = bb_img.get_size()  # 爆弾のRectを更新
         bb_rct.move_ip(avx, vy)  # 爆弾を動かす
 
+        kk_img = get_kk_img((0, 0))
+        kk_img = get_kk_img(tuple(sum_mv))
         # 爆弾が画面外に出ないように反転
         yoko, tate = check_bound(bb_rct)
         if not yoko:  # 横方向にはみ出ている
